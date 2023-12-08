@@ -21,6 +21,7 @@ class UserServices{
         const hashedPassword = createHmac('sha256', salt).update(password).digest('hex')
         return hashedPassword
     }
+
     public static createUser(payload:createUserPayload){
         const {firstName, lastName, email, password} = payload
         const salt = randomBytes(32).toString('hex')
@@ -39,6 +40,11 @@ class UserServices{
     private static  getUserEmail(email:string){
         return  prismaClient.users.findUnique({where:{email}})
     }
+
+    public static getUserById(id:string){
+        return prismaClient.users.findUnique({where:{id}})
+    }
+
     public static async getUserToken(payload:getUserTokenPayload){
         const {email, password} = payload
         const user = await UserServices.getUserEmail(email)
@@ -51,6 +57,10 @@ class UserServices{
         
         const token = JWT.sign({id:user.id, email:user.email}, jwtSecret)
         return token
+    }
+
+    public static decodeJWTToken(token:string){
+        return JWT.verify(token, jwtSecret)
     }
 }
 

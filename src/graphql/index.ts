@@ -3,6 +3,7 @@ import {User} from './user'
 async function createGraphQlServer(){
     const gqlServer = new ApolloServer({
         typeDefs: `
+        ${User.typeDefs}
         type Query{ 
            ${User.queries}
         }
@@ -11,7 +12,8 @@ async function createGraphQlServer(){
         }`,
         resolvers: {
             Query:{
-                ...User.resolvers.queries
+                ...User.resolvers.queries,
+                
             },
             Mutation:{
                 ...User.resolvers.mutations

@@ -7,6 +7,15 @@ const queries={
             password:payload.password
         })
         return token
+    },
+    getLoggedInUser: async(_:any, parameters:any, context:any)=>{
+        if(context && context.user){
+        const id = context.user.id
+        const user = await UserServices.getUserById(id)
+        return user
+    }
+        console.log(context);
+        throw new Error('Not the user')
     }
 }
 const mutations ={
