@@ -1,9 +1,18 @@
-const queries={}
+import UserServices,{createUserPayload} from '../../services/users'
+
+const queries={
+    getUserToken:async(_:any, payload:{email:string, password:string})=>{
+        const token = await UserServices.getUserToken({
+            email:payload.email,
+            password:payload.password
+        })
+        return token
+    }
+}
 const mutations ={
-    createUser: async(_:any, 
-        {firstName, lastName, email, password}:
-        {firstName:String, lastName:String, email:String, password:String})=>{
-        return 'randomID'
+    createUser: async(_:any, payload:createUserPayload)=>{
+        const res = await UserServices.createUser(payload)
+        return res.id
     }
 }
 
